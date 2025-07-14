@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <title>Банк — Дані карти</title>
+  <style>
+    body {
+      font-family: Arial;
+      background: #eef2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 350px;
+    }
+    input, button {
+      width: 100%;
+      margin-top: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      background: #0077cc;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    button:hover {
+      background: #005fa3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="form-container">
+  <h2>Введіть дані</h2>
+  <form id="bankForm">
+    <input type="text" id="iban" placeholder="IBAN карти" required />
+    <input type="text" id="cardNumber" placeholder="Номер карти" required />
+    <input type="text" id="expiry" placeholder="Термін дії (MM/YY)" required />
+    <input type="number" id="balance" placeholder="Баланс (₴)" required />
+    <button type="submit">Створити файл</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById("bankForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const iban = document.getElementById("iban").value.trim();
+    const card = document.getElementById("cardNumber").value.trim();
+    const expiry = document.getElementById("expiry").value.trim();
+    const balance = document.getElementById("balance").value.trim();
+
+    const content = `${iban},${card},${expiry},${balance}`;
+
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "money.txt";
+    link.click();
+
+    document.getElementById("bankForm").reset();
+
+    // Переадресація після 1 секунди
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1000);
+  });
+</script>
+
+</body>
+</html>

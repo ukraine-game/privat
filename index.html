@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Головна</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+
+    body {
+      margin: 0;
+      background-color: #f0f0f0;
+      font-family: 'Roboto', sans-serif;
+      position: relative;
+    }
+
+    img#bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: auto;
+      z-index: 0;
+    }
+
+    .text {
+      position: absolute;
+      color: black;
+      z-index: 1;
+    }
+
+    #ibanText {
+      top: 195px;
+      left: 177px;
+      font-size: 25px;
+    }
+
+    #cardText {
+      top: 440px;
+      left: 110px;
+      font-size: 26px;
+    }
+
+    #balanceText {
+      top: 550px;
+      left: 349px;
+      font-size: 30px;
+    }
+
+    #uploadContainer {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    input[type="file"] {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="uploadContainer">
+    <label>Оберіть файл money.txt:</label>
+    <input type="file" id="fileInput" accept=".txt">
+  </div>
+
+  <img id="bg" src="img/bg.png" alt="Фонове зображення">
+
+  <div id="ibanText" class="text"></div>
+  <div id="cardText" class="text"></div>
+  <div id="balanceText" class="text"></div>
+
+  <script>
+    document.getElementById("fileInput").addEventListener("change", function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const content = e.target.result.trim();
+        // Припускаємо формат: IBAN,Card,Expiry,Balance
+        const [iban, card, expiry, balance] = content.split(",");
+
+        document.getElementById("ibanText").textContent = iban || "IBAN";
+        document.getElementById("cardText").textContent = card || "Карта";
+        document.getElementById("balanceText").textContent = balance || "₴0";
+      };
+      reader.readAsText(file);
+    });
+  </script>
+
+</body>
+</html>
